@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
-// import { DatabaseModule } from './database/database.module';
-// import { resolve } from 'path';
-// import { UserModule } from './user/user.module';
+import { UserModule } from './user/user.module';
+import { User } from './user/entities/user.entity';
 
 @Module({
   imports: [
@@ -13,15 +11,14 @@ import { ConfigModule } from '@nestjs/config';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: 'poll_user',
-      password: 'poll_password',
-      database: 'poll_db',
-      entities: [],
+      password: '',
+      username: 'postgres',
+      entities: [User],
+      database: 'chat',
       synchronize: true,
+      logging: true,
     }),
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
