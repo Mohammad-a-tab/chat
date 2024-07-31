@@ -15,22 +15,9 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  /**
-   * this is function is used to create User in User Entity.
-   * @param createUserDto this will type of createUserDto in which
-   * we have defined what are the keys we are expecting from body
-   * @returns promise of user
-   */
   createUser(createUserDto: CreateUserDto): Promise<User> {
-    console.log('salam samad');
-    const user: User = new User();
-    user.name = createUserDto.name;
-    user.age = createUserDto.age;
-    user.email = createUserDto.email;
-    user.username = createUserDto.username;
-    user.password = createUserDto.password;
-    user.gender = createUserDto.gender;
-    return this.userRepository.save(user);
+    const newUser = this.userRepository.create(createUserDto);
+    return this.userRepository.save(newUser);
   }
 
   /**
