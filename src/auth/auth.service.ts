@@ -28,7 +28,7 @@ export class AuthService {
     try {
       const { password, ...userInfo } = signUpDto;
       let hashedPassword: string;
-      console.log('salam');
+
       try {
         const salt = randomBytes(parseInt(process.env.SALT_LENGTH));
         const derivedKey: any = await scrypt(password, salt, 32);

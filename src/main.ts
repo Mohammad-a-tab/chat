@@ -24,11 +24,12 @@ async function bootstrap() {
     .setTitle('Nest.js Socket.io chat')
     .setDescription('Real-time chat application backend')
     .setVersion('1.0.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(5000);
+  await app.listen(3000);
 }
 bootstrap();
