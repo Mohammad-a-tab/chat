@@ -8,9 +8,12 @@ export abstract class BaseEntity extends TypeOrmBaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
 
-  @Column('datetime', { default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+  @Column('timestamp', {
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updated_at: Date;
 }

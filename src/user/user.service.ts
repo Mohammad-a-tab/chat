@@ -1,66 +1,139 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import {
+  Injectable,
+  Logger,
+  InternalServerErrorException,
+  NotFoundException,
+  HttpStatus,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UpdateUserDto, UserDto, CreateUserDto } from './dto';
+import { sanitizeUser } from '../common/helpers/sanitize-user';
+import { RemoveResponse } from 'src/types/remove-response.type';
 
 @Injectable()
 export class UserService {
-  /**
-   * Here, we have used data mapper approch for this tutorial that is why we
-   * injecting repository here. Another approch can be Active records.
-   */
+  private readonly logger = new Logger(UserService.name);
+
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
-  createUser(createUserDto: CreateUserDto): Promise<User> {
-    const newUser = this.userRepository.create(createUserDto);
-    return this.userRepository.save(newUser);
+  async create(createUserDto: CreateUserDto): Promise<UserDto> {
+    try {
+      const user = this.userRepository.create(createUserDto);
+      return sanitizeUser(await this.userRepository.save(user));
+    } catch (error) {
+      this.logger.error(`Failed to create user: ${error.message}`, error.stack);
+      throw new InternalServerErrorException('Failed to create user');
+    }
   }
 
-  /**
-   * this function is used to get all the user's list
-   * @returns promise of array of users
-   */
-  findAllUser(): Promise<User[]> {
-    return this.userRepository.find();
+  async findOne(userId: string): Promise<UserDto> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          id: String(userId),
+        },
+      });
+
+      if (!user) {
+        this.logger.warn(`User with ID "${userId}" not found`);
+        throw new NotFoundException(`User with ID "${userId}" not found`);
+      }
+
+      return sanitizeUser(user);
+    } catch (error) {
+      this.logger.error(`Failed to find user: ${error.message}`, error.stack);
+      throw new NotFoundException(`Failed to find user with ID "${userId}"`);
+    }
   }
 
-  /**
-   * this function used to get data of use whose id is passed in parameter
-   * @param id is type of number, which represent the id of user.
-   * @returns promise of user
-   */
-  viewUser(id: number): Promise<User> {
-    return this.userRepository.findOneBy({ id });
+  async findUserByEmail(email: string): Promise<User> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          email,
+        },
+      });
+
+      if (!user) {
+        this.logger.warn(`User with email "${email}" not found`);
+        throw new NotFoundException(`User with email "${email}" not found`);
+      }
+
+      return user;
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+
+      this.logger.error('Failed to find user by email', error.stack);
+      throw new InternalServerErrorException(
+        'Failed to find user by email',
+        error,
+      );
+    }
   }
 
-  /**
-   * this function is used to updated specific user whose id is passed in
-   * parameter along with passed updated data
-   * @param id is type of number, which represent the id of user.
-   * @param updateUserDto this is partial type of createUserDto.
-   * @returns promise of udpate user
-   */
-  updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user: User = new User();
-    user.name = updateUserDto.name;
-    user.age = updateUserDto.age;
-    user.email = updateUserDto.email;
-    user.username = updateUserDto.username;
-    user.password = updateUserDto.password;
-    user.id = id;
-    return this.userRepository.save(user);
+  async findAll(): Promise<UserDto[]> {
+    try {
+      const users = await this.userRepository.find();
+      return users.map((user) => sanitizeUser(user));
+    } catch (error) {
+      this.logger.error(
+        `Failed to retrieve all users: ${error.message}`,
+        error.stack,
+      );
+      throw new InternalServerErrorException('Failed to retrieve all users');
+    }
   }
 
-  /**
-   * this function is used to remove or delete user from database.
-   * @param id is the type of number, which represent id of user
-   * @returns nuber of rows deleted or affected
-   */
-  removeUser(id: number): Promise<{ affected?: number }> {
-    return this.userRepository.delete(id);
+  async update(userId: string, updateUserDto: UpdateUserDto): Promise<UserDto> {
+    try {
+      const user = await this.findOne(userId);
+
+      if (!user) {
+        this.logger.warn(`User with ID "${userId}" not found`);
+        throw new NotFoundException(`User with ID "${userId}" not found`);
+      }
+
+      Object.assign(user, updateUserDto);
+      return sanitizeUser(await this.userRepository.save(user));
+    } catch (error) {
+      this.logger.error(`Failed to update user: ${error.message}`, error.stack);
+
+      if (error instanceof NotFoundException) throw error;
+
+      throw new InternalServerErrorException(
+        `Failed to update user with ID "${userId}"`,
+      );
+    }
+  }
+
+  async remove(userId: string): Promise<RemoveResponse> {
+    try {
+      const user = await this.findOne(userId);
+
+      if (!user) {
+        this.logger.warn(`User with ID "${userId}" not found`);
+        throw new NotFoundException(`User with ID "${userId}" not found`);
+      }
+
+      await this.userRepository.delete({ id: user.id });
+
+      return {
+        status: HttpStatus.OK,
+        description: 'The user has been successfully deleted.',
+      } as RemoveResponse;
+    } catch (error) {
+      this.logger.error(`Failed to remove user: ${error.message}`, error.stack);
+
+      if (error instanceof NotFoundException) throw error;
+
+      throw new InternalServerErrorException(
+        `Failed to remove user with ID "${userId}"`,
+      );
+    }
   }
 }

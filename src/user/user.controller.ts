@@ -1,43 +1,84 @@
 import {
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
-  Param,
+  Put,
   Delete,
-  ValidationPipe,
+  Body,
+  Param,
+  UseGuards,
+  HttpStatus,
 } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
+import { RemoveResponse } from 'src/types/remove-response.type';
+import { UserDto, UpdateUserDto } from './dto';
 
+@ApiTags('user')
 @Controller('user')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  async create(@Body(new ValidationPipe()) createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
-  }
-
   @Get()
-  findAll() {
-    return this.userService.findAllUser();
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Retrieved all users successfully.',
+    type: [User],
+  })
+  async findAll(): Promise<UserDto[]> {
+    return await this.userService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.viewUser(+id);
+  @ApiOperation({ summary: 'Get a user by ID' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The user has been successfully retrieved.',
+    type: User,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Failed to find user with ID $userId',
+  })
+  async findOne(@Param('id') id: string): Promise<UserDto> {
+    return await this.userService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.updateUser(+id, updateUserDto);
+  @Put(':id')
+  @ApiOperation({ summary: 'Update a user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The user has been successfully updated.',
+    type: User,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Failed to update user with ID $userId',
+  })
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<UserDto> {
+    return await this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.removeUser(+id);
+  @ApiOperation({ summary: 'Delete a user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The user has been successfully deleted.',
+  })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found.' })
+  async remove(@Param('id') id: string): Promise<RemoveResponse> {
+    return await this.userService.remove(id);
   }
 }

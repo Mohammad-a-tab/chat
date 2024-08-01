@@ -1,6 +1,6 @@
-// import { Room } from './room.entity';
-// import { User } from '../../user/entities/user.entity';
-// import { BaseEntity } from '../../common/entity/base.entity';
+// import { Room } from './room.entities';
+// import { User } from '../../user/entities/user.entities';
+// import { BaseEntity } from '../../common/entities/base.entities';
 // import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 //
 // @Entity({ name: 'message' })

@@ -1,30 +1,24 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity } from 'src/common/entities/base.entity';
+import { Column, Entity, Unique } from 'typeorm';
 
-@Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+@Entity({ name: 'user' })
+@Unique(['email'])
+export class User extends BaseEntity {
+  @Column()
+  firstName: string;
 
-  @Column({ type: 'varchar', length: 30 })
-  name: string;
+  @Column()
+  lastName: string;
 
-  @Column({ type: 'varchar', length: 15 })
+  @Column()
   username: string;
 
-  @Column({ type: 'varchar', length: 40 })
+  @Column()
   email: string;
 
-  @Column({ type: 'int' })
-  age: number;
+  @Column()
+  hashedPassword: string;
 
-  @Column({ type: 'varchar' })
-  password: string;
-
-  @Column({ type: 'enum', enum: ['m', 'f', 'u'] })
-  /**
-   * m - male
-   * f - female
-   * u - unspecified
-   */
-  gender: string;
+  @Column({ nullable: true })
+  refreshToken: string;
 }

@@ -1,4 +1,4 @@
-// import { BaseEntity } from '../../common/entity/base.entity';
+// import { BaseEntity } from '../../common/entities/base.entities';
 // import {
 //   Entity,
 //   Column,
@@ -7,8 +7,8 @@
 //   JoinTable,
 //   OneToMany,
 // } from 'typeorm';
-// import { User } from '../../user/entities/user.entity';
-// import { Message } from './message.entity';
+// import { User } from '../../user/entities/user.entities';
+// import { Message } from './message.entities';
 //
 // @Entity({ name: 'room' })
 // @Unique(['name'])
