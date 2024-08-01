@@ -14,6 +14,12 @@ export class Message extends BaseEntity {
   @ManyToOne(() => Room, (roomEntity) => roomEntity.messages)
   room: Room;
 
+  @Column()
+  createdBy: string;
+
+  @Column()
+  updatedBy: string;
+
   @ManyToOne(() => User, (user) => user.messages)
   @JoinColumn([{ name: 'createdBy', referencedColumnName: 'id' }])
   creator: User;

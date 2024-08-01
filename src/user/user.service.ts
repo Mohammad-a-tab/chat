@@ -1,9 +1,9 @@
 import {
-  Injectable,
   Logger,
-  InternalServerErrorException,
-  NotFoundException,
+  Injectable,
   HttpStatus,
+  NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';

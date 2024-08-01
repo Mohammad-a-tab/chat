@@ -5,7 +5,7 @@ import { Message } from './entities/message.entity';
 import { UserModule } from '../user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConnectedUser } from './entities/connected-user.entity';
-import { RoomParticipantsUser } from './entities/room-participants-user';
+import { RoomParticipantsUser } from './entities/room-participants-user.entity';
 
 @Module({
   providers: [ChatGateway],

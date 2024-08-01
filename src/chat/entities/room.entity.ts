@@ -1,10 +1,11 @@
 import {
-    Entity,
-    Column,
-    Unique,
-    ManyToMany,
-    JoinTable,
-    ManyToOne, OneToMany,
+  Entity,
+  Column,
+  Unique,
+  ManyToMany,
+  JoinTable,
+  ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import { Message } from './message.entity';
 import { User } from '../../user/entities/user.entity';
@@ -23,7 +24,7 @@ export class Room extends BaseEntity {
   @JoinTable({
     name: 'roomParticipantsUser',
     joinColumn: {
-      name: 'roomId',
+      name: 'id',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
@@ -35,6 +36,12 @@ export class Room extends BaseEntity {
 
   @Column()
   capacity: number;
+
+  @Column()
+  createdBy: string;
+
+  @Column()
+  updatedBy: string;
 
   @ManyToOne(() => User, (user) => user.maidRooms)
   admin: User;
