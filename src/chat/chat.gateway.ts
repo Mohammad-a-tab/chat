@@ -1,6 +1,3 @@
-import { Logger, UnauthorizedException, UseFilters } from '@nestjs/common';
-import { Socket } from 'socket.io';
-import { JwtService } from '@nestjs/jwt';
 import {
   WebSocketGateway,
   WebSocketServer,
@@ -11,13 +8,6 @@ import {
   WsException,
   ConnectedSocket,
 } from '@nestjs/websockets';
-import { Server } from 'socket.io';
-import { UserPayload } from 'src/types/user-payload.type';
-import { ConnectedUserService } from './services/connected-user.service';
-import { RoomService } from './services/room.service';
-import { WsExceptionFilter } from 'src/common/filters/ws-exception.filter';
-import { User } from '../user/entities';
-import { WsCurrentUser } from 'src/common/decorators/ws-current-user.decorator';
 import {
   CreateRoomDto,
   UpdateRoomDto,
@@ -28,9 +18,18 @@ import {
   DeleteMessageDto,
   RoomFetchRequestDto,
 } from './dto';
+import { JwtService } from '@nestjs/jwt';
+import { Socket, Server } from 'socket.io';
+import { User } from '../user/entities/user.entity';
+import { RoomService } from './services/room.service';
 import { RoomTypeEnum } from './enums/room-type.enum';
+import { UserPayload } from 'src/types/user-payload.type';
 import { MessageService } from './services/message.service';
 import { WsValidationPipe } from 'src/common/pipes/ws-validation.pipe';
+import { ConnectedUserService } from './services/connected-user.service';
+import { Logger, UnauthorizedException, UseFilters } from '@nestjs/common';
+import { WsExceptionFilter } from 'src/common/filters/ws-exception.filter';
+import { WsCurrentUser } from 'src/common/decorators/ws-current-user.decorator';
 
 @UseFilters(WsExceptionFilter)
 @WebSocketGateway(4800, { cors: { origin: '*' } })

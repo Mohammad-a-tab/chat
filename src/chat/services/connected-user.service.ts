@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
-import { ConnectedUser } from '../entities';
+import { ConnectedUser } from '../entities/connected-user.entity';
 import { WsException } from '@nestjs/websockets';
 
 @Injectable()
