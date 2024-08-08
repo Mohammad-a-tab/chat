@@ -11,10 +11,10 @@ export class RoomParticipantsUser extends BaseEntity {
   @PrimaryColumn()
   roomId: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false, default: 'null' })
   createdBy: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false, default: 'null' })
   updatedBy: string;
 
   @ManyToOne(() => User, (user) => user.rooms)
