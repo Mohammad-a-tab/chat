@@ -127,7 +127,7 @@ export function LoginUser(formValues) {
 
     await axios
       .post(
-        "/auth/login",
+        "http://localhost:4000/auth/sign-in",
         {
           ...formValues,
         },
@@ -177,7 +177,7 @@ export function RegisterUser(formValues) {
 
     await axios
       .post(
-        "/auth/register",
+        "http://localhost:4000/auth/sign-up",
         {
           ...formValues,
         },

@@ -1,6 +1,7 @@
 import {
   HttpException,
   HttpStatus,
+  Inject,
   Injectable,
   Logger,
   UnauthorizedException,
@@ -9,8 +10,10 @@ import { promisify } from 'util';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
 import { SignInDto, SignUpDto } from './dto';
-import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
+import { User } from '../user/entities/user.entity';
+import { EmailService } from '../email/email.service';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { randomBytes, scrypt as scryptCallback, timingSafeEqual } from 'crypto';
 
 const scrypt = promisify(scryptCallback);
@@ -20,7 +23,9 @@ export class AuthService {
   private readonly logger = new Logger(AuthService.name);
 
   constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly userService: UserService,
+    private readonly emailService: EmailService,
     private jwtService: JwtService,
   ) {}
 
@@ -45,19 +50,22 @@ export class AuthService {
         hashedPassword,
       });
 
-      const { id, email } = newUser;
+      const { id, email, firstName, lastName, username } = newUser;
 
-      const accessToken = this.generateAccessToken(id, email);
-      const refreshToken = this.generateRefreshToken(id, email);
+      const otp = Math.floor(Math.random() * 90000 + 10000);
 
-      await this.userService.update(id, { refreshToken });
+      await this.cacheManager.set(username, otp, 1000);
 
-      res.cookie('jwt', refreshToken, {
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000,
-      });
+      const data = {
+        firstName,
+        lastName,
+        email,
+        otp,
+      };
 
-      return res.json({ accessToken, newUser });
+      const test = this.emailService.verifyEmail(data);
+
+      console.log(test);
     } catch (error) {
       this.logger.error('An error occurred during signup.', error);
 

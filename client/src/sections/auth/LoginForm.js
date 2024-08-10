@@ -19,7 +19,7 @@ export default function AuthLoginForm() {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
 
-  const {isLoading} = useSelector((state) => state.auth);
+  // const {isLoading} = useSelector((state) => state.auth);
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
@@ -100,7 +100,7 @@ export default function AuthLoginForm() {
         size="large"
         type="submit"
         variant="contained"
-        loading={isLoading}
+        // loading={isLoading}
         sx={{
           bgcolor: "text.primary",
           color: (theme) =>

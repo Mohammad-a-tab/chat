@@ -5,15 +5,15 @@ import { SimpleBarStyle } from "../../components/Scrollbar";
 
 import { ChatHeader, ChatFooter } from "../../components/Chat";
 import useResponsive from "../../hooks/useResponsive";
-import { Chat_History } from "../../data";
-import {
-  DocMsg,
-  LinkMsg,
-  MediaMsg,
-  ReplyMsg,
-  TextMsg,
-  Timeline,
-} from "../../sections/dashboard/Conversation";
+// import { Chat_History } from "../../data";
+// import {
+//   DocMsg,
+//   LinkMsg,
+//   MediaMsg,
+//   ReplyMsg,
+//   TextMsg,
+//   Timeline,
+// } from "../../sections/dashboard/Conversation";
 import { useDispatch, useSelector } from "react-redux";
 import {
   FetchCurrentMessages,
@@ -46,42 +46,42 @@ const Conversation = ({ isMobile, menu }) => {
         {current_messages.map((el, idx) => {
           switch (el.type) {
             case "divider":
-              return (
-                // Timeline
-                <Timeline el={el} />
-              );
+              // return (
+              //   // Timeline
+              //   // <Timeline el={el} />
+              // );
 
             case "msg":
-              switch (el.subtype) {
-                case "img":
-                  return (
-                    // Media Message
-                    <MediaMsg el={el} menu={menu} />
-                  );
-
-                case "doc":
-                  return (
-                    // Doc Message
-                    <DocMsg el={el} menu={menu} />
-                  );
-                case "Link":
-                  return (
-                    //  Link Message
-                    <LinkMsg el={el} menu={menu} />
-                  );
-
-                case "reply":
-                  return (
-                    //  ReplyMessage
-                    <ReplyMsg el={el} menu={menu} />
-                  );
-
-                default:
-                  return (
-                    // Text Message
-                    <TextMsg el={el} menu={menu} />
-                  );
-              }
+              // switch (el.subtype) {
+              //   case "img":
+              //     return (
+              //       // Media Message
+              //       <MediaMsg el={el} menu={menu} />
+              //     );
+              //
+              //   case "doc":
+              //     return (
+              //       // Doc Message
+              //       <DocMsg el={el} menu={menu} />
+              //     );
+              //   case "Link":
+              //     return (
+              //       //  Link Message
+              //       <LinkMsg el={el} menu={menu} />
+              //     );
+              //
+              //   case "reply":
+              //     return (
+              //       //  ReplyMessage
+              //       <ReplyMsg el={el} menu={menu} />
+              //     );
+              //
+              //   default:
+              //     return (
+              //       // Text Message
+              //       <TextMsg el={el} menu={menu} />
+              //     );
+              // }
 
             default:
               return <></>;

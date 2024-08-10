@@ -5,11 +5,11 @@ import { Box, Stack, Typography } from "@mui/material";
 import { Link, useSearchParams } from "react-router-dom";
 import ChatComponent from "./Conversation";
 import Chats from "./Chats";
-import Contact from "../../sections/dashboard/Contact";
+// import Contact from "../../sections/dashboard/Contact";
 import NoChat from "../../assets/Illustration/NoChat";
 import { useSelector } from "react-redux";
-import StarredMessages from "../../sections/dashboard/StarredMessages";
-import Media from "../../sections/dashboard/SharedMessages";
+// import StarredMessages from "../../sections/dashboard/StarredMessages";
+// import Media from "../../sections/dashboard/SharedMessages";
 
 const GeneralApp = () => {
   const [searchParams] = useSearchParams();
@@ -69,13 +69,13 @@ const GeneralApp = () => {
           (() => {
             switch (sideBar.type) {
               case "CONTACT":
-                return <Contact />;
+                // return <Contact />;
 
               case "STARRED":
-                return <StarredMessages />;
+                // return <StarredMessages />;
 
               case "SHARED":
-                return <Media />;
+                // return <Media />;
 
               default:
                 break;

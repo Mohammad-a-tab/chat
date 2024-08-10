@@ -24,7 +24,7 @@ import {
   SearchIconWrapper,
   StyledInputBase,
 } from "../../components/Search";
-import Friends from "../../sections/dashboard/Friends";
+// import Friends from "../../sections/dashboard/Friends";
 import { socket } from "../../socket";
 import { useDispatch, useSelector } from "react-redux";
 import { FetchDirectConversations } from "../../redux/slices/conversation";
@@ -139,9 +139,9 @@ const Chats = () => {
           </Stack>
         </Stack>
       </Box>
-      {openDialog && (
-        <Friends open={openDialog} handleClose={handleCloseDialog} />
-      )}
+      {/*{openDialog && (*/}
+      {/*  <Friends open={openDialog} handleClose={handleCloseDialog} />*/}
+      {/*)}*/}
     </>
   );
 };

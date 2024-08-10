@@ -11,26 +11,26 @@ import {
   AddDirectConversation,
   AddDirectMessage,
 } from "../../redux/slices/conversation";
-import AudioCallNotification from "../../sections/dashboard/Audio/CallNotification";
-import VideoCallNotification from "../../sections/dashboard/video/CallNotification";
+// import AudioCallNotification from "../../sections/Dashboard/Audio/CallNotification";
+// import VideoCallNotification from "../../sections/dashboard/video/CallNotification";
 import {
   PushToAudioCallQueue,
   UpdateAudioCallDialog,
 } from "../../redux/slices/audioCall";
-import AudioCallDialog from "../../sections/dashboard/Audio/CallDialog";
-import VideoCallDialog from "../../sections/dashboard/video/CallDialog";
+// import AudioCallDialog from "../../sections/dashboard/Audio/CallDialog";
+// import VideoCallDialog from "../../sections/dashboard/video/CallDialog";
 import { PushToVideoCallQueue, UpdateVideoCallDialog } from "../../redux/slices/videoCall";
 
 const DashboardLayout = () => {
   const isDesktop = useResponsive("up", "md");
   const dispatch = useDispatch();
   const {user_id} = useSelector((state) => state.auth);
-  const { open_audio_notification_dialog, open_audio_dialog } = useSelector(
-    (state) => state.audioCall
-  );
-  const { open_video_notification_dialog, open_video_dialog } = useSelector(
-    (state) => state.videoCall
-  );
+  // const { open_audio_notification_dialog, open_audio_dialog } = useSelector(
+  //   (state) => state.audioCall
+  // );
+  // const { open_video_notification_dialog, open_video_dialog } = useSelector(
+  //   (state) => state.videoCall
+  // );
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { conversations, current_conversation } = useSelector(
     (state) => state.conversation.direct_chat
@@ -155,24 +155,24 @@ const DashboardLayout = () => {
 
         <Outlet />
       </Stack>
-      {open_audio_notification_dialog && (
-        <AudioCallNotification open={open_audio_notification_dialog} />
-      )}
-      {open_audio_dialog && (
-        <AudioCallDialog
-          open={open_audio_dialog}
-          handleClose={handleCloseAudioDialog}
-        />
-      )}
-      {open_video_notification_dialog && (
-        <VideoCallNotification open={open_video_notification_dialog} />
-      )}
-      {open_video_dialog && (
-        <VideoCallDialog
-          open={open_video_dialog}
-          handleClose={handleCloseVideoDialog}
-        />
-      )}
+      {/*{open_audio_notification_dialog && (*/}
+      {/*  <AudioCallNotification open={open_audio_notification_dialog} />*/}
+      {/*)}*/}
+      {/*{open_audio_dialog && (*/}
+      {/*  <AudioCallDialog*/}
+      {/*    open={open_audio_dialog}*/}
+      {/*    handleClose={handleCloseAudioDialog}*/}
+      {/*  />*/}
+      {/*)}*/}
+      {/*{open_video_notification_dialog && (*/}
+      {/*  <VideoCallNotification open={open_video_notification_dialog} />*/}
+      {/*)}*/}
+      {/*{open_video_dialog && (*/}
+      {/*  <VideoCallDialog*/}
+      {/*    open={open_video_dialog}*/}
+      {/*    handleClose={handleCloseVideoDialog}*/}
+      {/*  />*/}
+      {/*)}*/}
     </>
   );
 };

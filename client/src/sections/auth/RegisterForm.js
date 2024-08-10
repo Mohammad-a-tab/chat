@@ -73,6 +73,7 @@ export default function AuthRegisterForm() {
           <RHFTextField name="lastName" label="Last name" />
         </Stack>
 
+        <RHFTextField name="username" label="username" />
         <RHFTextField name="email" label="Email address" />
 
         <RHFTextField
@@ -100,7 +101,7 @@ export default function AuthRegisterForm() {
         size="large"
         type="submit"
         variant="contained"
-        loading={isLoading}
+        // loading={isLoading}
         sx={{
           bgcolor: "text.primary",
           color: (theme) =>
