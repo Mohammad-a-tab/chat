@@ -49,14 +49,14 @@ export default function VerifyForm() {
   const onSubmit = async (data) => {
     try {
       //   Send API Request
-      dispatch(
-        VerifyEmail({
-          email,
-          otp: `${data.code1}${data.code2}${data.code3}${data.code4}${data.code5}${data.code6}`,
-        })
+      await dispatch(
+          VerifyEmail({
+            email,
+            code: `${data.code1}${data.code2}${data.code3}${data.code4}${data.code5}${data.code6}`,
+          })
       );
     } catch (error) {
-      console.error(error);
+      console.error('salam');
     }
   };
 
