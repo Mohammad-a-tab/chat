@@ -9,7 +9,7 @@ import {
 import { promisify } from 'util';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
-import { SignInDto, SignUpDto } from './dto';
+import { SignInDto, SignUpDto, CheckOtpDto } from './dto';
 import { UserService } from '../user/user.service';
 import { User } from '../user/entities/user.entity';
 import { MailService } from '../mail/mail.service';
@@ -51,11 +51,11 @@ export class AuthService {
         hashedPassword,
       });
 
-      const { id, email, firstName, lastName, username } = newUser;
+      const { email, firstName, lastName } = newUser;
 
-      const otp = Math.floor(Math.random() * 90000 + 10000);
+      const otp = Math.floor(100000 + Math.random() * 900000);
 
-      await this.cacheManager.set(username, otp, 1000);
+      await this.cacheManager.set(email, otp, 120);
 
       const data = {
         firstName,
@@ -64,9 +64,9 @@ export class AuthService {
         otp,
       };
 
-      const test = this.emailService.verifyEmail(data);
+      await this.emailService.verifyEmail(data);
 
-      return res.json(test);
+      return res.json({ message: 'send email verify successful' });
     } catch (error) {
       this.logger.error('An error occurred during signup.', error);
 
@@ -76,6 +76,31 @@ export class AuthService {
     }
   }
 
+  async checkOtp(checkOtpDto: CheckOtpDto, res: Response) {
+    const { code, email } = checkOtpDto;
+
+    const otp = await this.cacheManager.get(email);
+    console.log(otp, code);
+    if (otp == code) {
+      const user = await this.userService.findUserByEmail(email);
+
+      const { id } = user;
+
+      const accessToken = this.generateAccessToken(id, email);
+      const refreshToken = this.generateRefreshToken(id, email);
+
+      await this.userService.update(id, { refreshToken });
+
+      res.cookie('jwt', refreshToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+
+      return res.json({ accessToken, user });
+    }
+
+    return res.status(HttpStatus.NOT_ACCEPTABLE);
+  }
   async signIn(signInDto: SignInDto, res: Response) {
     const { email, password } = signInDto;
     try {

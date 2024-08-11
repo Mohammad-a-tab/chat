@@ -76,6 +76,33 @@ export class UserService {
     }
   }
 
+  async findUserByUsername(username: string): Promise<User> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          username,
+        },
+      });
+
+      if (!user) {
+        this.logger.warn(`User with username "${username}" not found`);
+        throw new NotFoundException(
+          `User with username "${username}" not found`,
+        );
+      }
+
+      return user;
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+
+      this.logger.error('Failed to find user by username', error.stack);
+      throw new InternalServerErrorException(
+        'Failed to find user by username',
+        error,
+      );
+    }
+  }
+
   async findAll(): Promise<UserDto[]> {
     try {
       const users = await this.userRepository.find();

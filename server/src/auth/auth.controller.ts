@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
-import { SignInDto, SignUpDto } from './dto';
+import { SignInDto, SignUpDto, CheckOtpDto } from './dto';
 import { User } from '../user/entities/user.entity';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
@@ -31,6 +31,22 @@ export class AuthController {
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Invalid data.' })
   async signUp(@Body() signUpDto: SignUpDto, @Res() res: Response) {
     return await this.authService.signUp(signUpDto, res);
+  }
+
+  @Post('check-otp')
+  @ApiOperation({ summary: 'User Check Otp' })
+  @ApiBody({ type: CheckOtpDto, description: 'User Check-otp Data' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User successfully login in. Access token generated.',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Invalid credentials.',
+  })
+  async checkOtp(@Body() checkOtpDto: CheckOtpDto, @Res() res: Response) {
+    console.log('salam');
+    return await this.authService.checkOtp(checkOtpDto, res);
   }
 
   @Post('sign-in')
