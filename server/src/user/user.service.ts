@@ -68,9 +68,9 @@ export class UserService {
     } catch (error) {
       if (error instanceof NotFoundException) throw error;
 
-      this.logger.error('Failed to find user by email', error.stack);
+      this.logger.error('Failed to find user by mail', error.stack);
       throw new InternalServerErrorException(
-        'Failed to find user by email',
+        'Failed to find user by mail',
         error,
       );
     }

@@ -12,7 +12,8 @@ import { Request, Response } from 'express';
 import { SignInDto, SignUpDto } from './dto';
 import { UserService } from '../user/user.service';
 import { User } from '../user/entities/user.entity';
-import { EmailService } from '../email/email.service';
+import { MailService } from '../mail/mail.service';
+import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { randomBytes, scrypt as scryptCallback, timingSafeEqual } from 'crypto';
 
@@ -25,7 +26,7 @@ export class AuthService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly userService: UserService,
-    private readonly emailService: EmailService,
+    private readonly emailService: MailService,
     private jwtService: JwtService,
   ) {}
 
@@ -65,7 +66,7 @@ export class AuthService {
 
       const test = this.emailService.verifyEmail(data);
 
-      console.log(test);
+      return res.json(test);
     } catch (error) {
       this.logger.error('An error occurred during signup.', error);
 
@@ -82,7 +83,7 @@ export class AuthService {
 
       if (!user) {
         this.logger.warn(`Invalid email "${email}" or password`);
-        throw new UnauthorizedException('Invalid email or password');
+        throw new UnauthorizedException('Invalid mail or password');
       }
 
       const [saltBase64, hashBase64] = user.hashedPassword.split('$');
@@ -94,7 +95,7 @@ export class AuthService {
 
       if (!passwordMatch) {
         this.logger.warn(`Invalid email "${email}" or password`);
-        throw new UnauthorizedException('Invalid email or password');
+        throw new UnauthorizedException('Invalid mail or password');
       }
 
       const { id } = user;

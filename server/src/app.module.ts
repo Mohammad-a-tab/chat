@@ -3,11 +3,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ChatModule } from './chat/chat.module';
-import { EmailModule } from './email/email.module';
-import { EventEmitterModule } from "@nestjs/event-emitter";
+import { MailModule } from './mail/mail.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -23,11 +24,12 @@ import { EventEmitterModule } from "@nestjs/event-emitter";
       // dropSchema: true,
       logging: true,
     }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     UserModule,
     AuthModule,
     ChatModule,
-    EmailModule,
-    EventEmitterModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
