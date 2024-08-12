@@ -217,9 +217,8 @@ export function RegisterUser(formValues) {
 
 export function VerifyEmail(formValues) {
   return async (dispatch, getState) => {
-    console.log('salam injam')
     dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
-
+    console.log(formValues)
     await axios
       .post(
         "http://localhost:4000/auth/check-otp",
@@ -234,7 +233,7 @@ export function VerifyEmail(formValues) {
       )
       .then(function (response) {
         console.log(response);
-        dispatch(slice.actions.updateRegisterEmail({ email: "" }));
+        dispatch(slice.actions.updateRegisterEmail({ email: formValues.email }));
         window.localStorage.setItem("user_id", response.data.user_id);
         dispatch(
           slice.actions.logIn({
@@ -252,7 +251,7 @@ export function VerifyEmail(formValues) {
         );
       })
       .catch(function (error) {
-        console.log('salam');
+        console.log(error);
         dispatch(showSnackbar({ severity: "error", message: error.message }));
         dispatch(
           slice.actions.updateIsLoading({ error: true, isLoading: false })
