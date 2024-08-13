@@ -142,13 +142,13 @@ export function LoginUser(formValues) {
         dispatch(
           slice.actions.logIn({
             isLoggedIn: true,
-            token: response.data.token,
-            user_id: response.data.user_id,
+            token: response.data.accessToken,
+            user_id: response.data.currentUser.id,
           })
         );
-        window.localStorage.setItem("user_id", response.data.user_id);
+        window.localStorage.setItem("user_id", response.data.currentUser.id);
         dispatch(
-          showSnackbar({ severity: "success", message: response.data.message })
+          showSnackbar({ severity: "success", message: response.statusText })
         );
         dispatch(
           slice.actions.updateIsLoading({ isLoading: false, error: false })
@@ -238,7 +238,8 @@ export function VerifyEmail(formValues) {
         dispatch(
           slice.actions.logIn({
             isLoggedIn: true,
-            token: response.data.token,
+            token: response.data.accessToken,
+            user: response.data.user
           })
         );
 

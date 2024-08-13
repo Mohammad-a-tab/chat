@@ -220,27 +220,30 @@ export const SelectConversation = ({ room_id }) => {
 };
 
 export const FetchCallLogs = () => {
-  return async (dispatch, getState) => {
-    axios
-      .get("/user/get-call-logs", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getState().auth.token}`,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        dispatch(slice.actions.fetchCallLogs({ call_logs: response.data.data }));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  return '';
+  // return async (dispatch, getState) => {
+  //   axios
+  //     .get("/user/get-call-logs", {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${getState().auth.token}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       console.log(response);
+  //       dispatch(slice.actions.fetchCallLogs({ call_logs: response.data.data }));
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 };
 export const FetchUserProfile = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch, getState) =>
+  {
+    console.log(getState().auth)
     axios
-      .get("/user/get-me", {
+      .get(`http://localhost:4000/user/${getState().auth.user_id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getState().auth.token}`,

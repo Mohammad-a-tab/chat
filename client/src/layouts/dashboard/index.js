@@ -24,7 +24,7 @@ import { PushToVideoCallQueue, UpdateVideoCallDialog } from "../../redux/slices/
 const DashboardLayout = () => {
   const isDesktop = useResponsive("up", "md");
   const dispatch = useDispatch();
-  const {user_id} = useSelector((state) => state.auth);
+  const {user_id, token} = useSelector((state) => state.auth);
   // const { open_audio_notification_dialog, open_audio_dialog } = useSelector(
   //   (state) => state.audioCall
   // );
@@ -60,14 +60,14 @@ const DashboardLayout = () => {
       window.onload();
 
       if (!socket) {
-        connectSocket(user_id);
+        connectSocket(user_id, token);
       }
 
       socket.on("audio_call_notification", (data) => {
         // TODO => dispatch an action to add this in call_queue
         dispatch(PushToAudioCallQueue(data));
       });
-      
+
       socket.on("video_call_notification", (data) => {
         // TODO => dispatch an action to add this in call_queue
         dispatch(PushToVideoCallQueue(data));

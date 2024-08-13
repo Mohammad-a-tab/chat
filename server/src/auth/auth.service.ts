@@ -80,7 +80,7 @@ export class AuthService {
     const { code, email } = checkOtpDto;
 
     const otp = await this.cacheManager.get(email);
-    console.log(otp, code);
+
     if (otp == code) {
       const user = await this.userService.findUserByEmail(email);
 
@@ -101,6 +101,7 @@ export class AuthService {
 
     return res.status(HttpStatus.NOT_ACCEPTABLE);
   }
+
   async signIn(signInDto: SignInDto, res: Response) {
     const { email, password } = signInDto;
     try {

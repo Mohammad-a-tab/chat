@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { CaretLeft } from "phosphor-react";
-// import ProfileForm from "../../../sections/dashboard/Settings/ProfileForm";
+import ProfileForm from "../../../sections/Dashboard/Settings/ProfileForm";
 import { useDispatch } from "react-redux";
 import { FetchUserProfile } from "../../../redux/slices/app";
 
@@ -40,23 +40,23 @@ const Profile = () => {
               <Typography variant="h5">Profile</Typography>
             </Stack>
 
-            {/* Profile Edit Form */}
-            {/*<ProfileForm />*/}
+             {/*Profile Edit Form*/}
+            <ProfileForm />
           </Stack>
         </Box>
 
-        {/* Right Pane */}
+         {/*Right Pane*/}
         <Box
-          sx={{
-            height: "100%",
-            width: "calc(100vw - 420px )",
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
+    sx={{
+        height: "100%",
+        width: "calc(100vw - 420px )",
+        backgroundColor: (theme) =>
+            theme.palette.mode === "light"
                 ? "#FFF"
                 : theme.palette.background.paper,
-            borderBottom: "6px solid #0162C4",
-          }}
-        ></Box>
+        borderBottom: "6px solid #0162C4",
+    }}
+    />
       </Stack>
     </>
   );

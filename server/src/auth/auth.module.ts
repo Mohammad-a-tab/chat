@@ -11,7 +11,6 @@ import { CacheModule } from '@nestjs/cache-manager';
     UserModule,
     MailModule,
     JwtModule.register({ global: true }),
-    CacheModule.register(),
   ],
   controllers: [AuthController],
   providers: [AuthService],

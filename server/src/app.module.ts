@@ -7,8 +7,8 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ChatModule } from './chat/chat.module';
-import { MailModule } from './mail/mail.module';
-import { EventEmitterModule } from '@nestjs/event-emitter';
+import { CacheModule } from '@nestjs/cache-manager';
+import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
   imports: [
@@ -23,6 +23,12 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
       synchronize: true,
       // dropSchema: true,
       logging: true,
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      store: redisStore,
+      host: 'localhost',
+      port: 6379,
     }),
     ConfigModule.forRoot({
       isGlobal: true,

@@ -45,7 +45,7 @@ export class AuthController {
     description: 'Invalid credentials.',
   })
   async checkOtp(@Body() checkOtpDto: CheckOtpDto, @Res() res: Response) {
-    console.log('salam');
+    console.log(checkOtpDto);
     return await this.authService.checkOtp(checkOtpDto, res);
   }
 
