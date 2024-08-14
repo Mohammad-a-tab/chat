@@ -9,7 +9,7 @@ import {
   Stack,
 } from "@mui/material";
 
-import { faker } from "@faker-js/faker";
+// import { faker } from "@faker-js/faker";
 
 import { ZegoExpressEngine } from "zego-express-engine-webrtc";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,6 +51,7 @@ const CallDialog = ({ open, handleClose }) => {
   // Step 1
 
   // Initialize the ZegoExpressEngine instance
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const zg = new ZegoExpressEngine(appID, server);
 
   const streamID = call_details?.streamID;
@@ -300,7 +301,7 @@ const CallDialog = ({ open, handleClose }) => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [handleDisconnect, incoming, roomID, streamID, token, userID, userName, zg]);
 
   return (
     <>

@@ -126,6 +126,55 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
+  @SubscribeMessage('getAllRooms')
+  async onFetchAllRooms(
+    // @WsCurrentUser() currentUser: UserPayload,
+    // @MessageBody(new WsValidationPipe())
+    //   roomFetchRequestDto: RoomFetchRequestDto,
+    @ConnectedSocket() client: Socket,
+  ): Promise<void> {
+    // const { id: userId } = currentUser;
+    // const { roomId } = roomFetchRequestDto;
+
+    try {
+      const rooms = await this.roomService.findAll();
+
+      client.emit('start_chat', rooms);
+
+      this.logger.log(`User ID fetche successfully.`);
+    } catch (error) {
+      this.logger.error(
+        // `Error fetching details for Room ID ${roomId} by User ID ${userId}: ${error.message}`,
+        error.stack,
+      );
+      throw new WsException('Error occurred while fetching room details.');
+    }
+  }
+
+  @SubscribeMessage('get_direct_conversations')
+  async onFetchDirectConversations(
+    @WsCurrentUser() currentUser: UserPayload,
+    // @MessageBody(new WsValidationPipe())
+    //   roomFetchRequestDto: RoomFetchRequestDto,
+    @ConnectedSocket() client: Socket,
+  ): Promise<void> {
+    const { id: userId } = currentUser;
+
+    try {
+      const rooms = await this.roomService.findByUserId(userId);
+
+      client.emit('start_chat', rooms);
+
+      this.logger.log(`User ID ${userId} fetched details for R vat vat.`);
+    } catch (error) {
+      this.logger.error(
+        // `Error fetching details for Room ID ${roomId} by User ID ${userId}: ${error.message}`,
+        error.stack,
+      );
+      throw new WsException('Error occurred while fetching room details.');
+    }
+  }
+
   @SubscribeMessage('updateRoom')
   async onUpdateRoom(
     @WsCurrentUser() currentUser: UserPayload,

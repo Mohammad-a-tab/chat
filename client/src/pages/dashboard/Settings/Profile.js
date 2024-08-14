@@ -10,7 +10,7 @@ const Profile = () => {
   
   useEffect(() => {
     dispatch(FetchUserProfile());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

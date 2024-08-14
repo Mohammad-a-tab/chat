@@ -45,6 +45,7 @@ const CallDialog = ({ open, handleClose }) => {
   // Step 1
 
   // Initialize the ZegoExpressEngine instance
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const zg = new ZegoExpressEngine(appID, server);
 
   const audioStreamID = `audio_${call_details?.streamID}`;

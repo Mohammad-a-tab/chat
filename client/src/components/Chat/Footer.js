@@ -253,6 +253,7 @@ const Footer = () => {
             >
               <IconButton
                 onClick={() => {
+                  console.log(current_conversation);
                   socket.emit("text_message", {
                     message: linkify(value),
                     conversation_id: room_id,

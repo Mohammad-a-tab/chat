@@ -71,6 +71,7 @@ const slice = createSlice({
       state.direct_chat.conversations = state.direct_chat.conversations.filter(
         (el) => el?.id !== this_conversation._id
       );
+      console.log({'angari roome': user})
       state.direct_chat.conversations.push({
         id: this_conversation._id._id,
         user_id: user?._id,
