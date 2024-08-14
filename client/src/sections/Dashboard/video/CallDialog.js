@@ -314,7 +314,7 @@ const CallDialog = ({ open, handleClose }) => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [audioStreamID, call_details?.streamID, handleDisconnect, incoming, roomID, token, userID, userName, videoStreamID, zg]);
 
   return (
     <>

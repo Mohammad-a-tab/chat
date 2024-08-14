@@ -11,41 +11,40 @@ import {
   AddDirectConversation,
   AddDirectMessage,
 } from "../../redux/slices/conversation";
-// import AudioCallNotification from "../../sections/Dashboard/Audio/CallNotification";
-// import VideoCallNotification from "../../sections/dashboard/video/CallNotification";
+import AudioCallNotification from "../../sections/Dashboard/Audio/CallNotification";
+import VideoCallNotification from "../../sections/Dashboard/Audio/CallNotification";
 import {
   PushToAudioCallQueue,
   UpdateAudioCallDialog,
 } from "../../redux/slices/audioCall";
-// import AudioCallDialog from "../../sections/dashboard/Audio/CallDialog";
-// import VideoCallDialog from "../../sections/dashboard/video/CallDialog";
+import AudioCallDialog from "../../sections/Dashboard/Audio/CallDialog";
+import VideoCallDialog from "../../sections/Dashboard/video/CallDialog";
 import { PushToVideoCallQueue, UpdateVideoCallDialog } from "../../redux/slices/videoCall";
 
 const DashboardLayout = () => {
   const isDesktop = useResponsive("up", "md");
   const dispatch = useDispatch();
   const {user_id, token} = useSelector((state) => state.auth);
-  // const { open_audio_notification_dialog, open_audio_dialog } = useSelector(
-  //   (state) => state.audioCall
-  // );
-  // const { open_video_notification_dialog, open_video_dialog } = useSelector(
-  //   (state) => state.videoCall
-  // );
+  const { open_audio_notification_dialog, open_audio_dialog } = useSelector(
+    (state) => state.audioCall
+  );
+  const { open_video_notification_dialog, open_video_dialog } = useSelector(
+    (state) => state.videoCall
+  );
   const { isLoggedIn } = useSelector((state) => state.auth);
   const { conversations, current_conversation } = useSelector(
     (state) => state.conversation.direct_chat
   );
 
   useEffect(() => {
-    dispatch(FetchUserProfile());
-  }, []);
-  
+    dispatch(FetchUserProfile()).then(r => console.log(r));
+  }, [dispatch]);
 
   const handleCloseAudioDialog = () => {
     dispatch(UpdateAudioCallDialog({ state: false }));
   };
   const handleCloseVideoDialog = () => {
-    dispatch(UpdateVideoCallDialog({ state: false }));
+    dispatch(UpdateVideoCallDialog({state: false})).then(r => console.log(r));
   };
 
   useEffect(() => {
@@ -139,7 +138,7 @@ const DashboardLayout = () => {
       socket?.off("new_message");
       socket?.off("audio_call_notification");
     };
-  }, [isLoggedIn, socket]);
+  }, [conversations, current_conversation, dispatch, isLoggedIn, token, user_id]);
 
   if (!isLoggedIn) {
     return <Navigate to={"/auth/login"} />;
@@ -155,24 +154,24 @@ const DashboardLayout = () => {
 
         <Outlet />
       </Stack>
-      {/*{open_audio_notification_dialog && (*/}
-      {/*  <AudioCallNotification open={open_audio_notification_dialog} />*/}
-      {/*)}*/}
-      {/*{open_audio_dialog && (*/}
-      {/*  <AudioCallDialog*/}
-      {/*    open={open_audio_dialog}*/}
-      {/*    handleClose={handleCloseAudioDialog}*/}
-      {/*  />*/}
-      {/*)}*/}
-      {/*{open_video_notification_dialog && (*/}
-      {/*  <VideoCallNotification open={open_video_notification_dialog} />*/}
-      {/*)}*/}
-      {/*{open_video_dialog && (*/}
-      {/*  <VideoCallDialog*/}
-      {/*    open={open_video_dialog}*/}
-      {/*    handleClose={handleCloseVideoDialog}*/}
-      {/*  />*/}
-      {/*)}*/}
+      {open_audio_notification_dialog && (
+        <AudioCallNotification open={open_audio_notification_dialog} />
+      )}
+      {open_audio_dialog && (
+        <AudioCallDialog
+          open={open_audio_dialog}
+          handleClose={handleCloseAudioDialog}
+        />
+      )}
+      {open_video_notification_dialog && (
+        <VideoCallNotification open={open_video_notification_dialog} />
+      )}
+      {open_video_dialog && (
+        <VideoCallDialog
+          open={open_video_dialog}
+          handleClose={handleCloseVideoDialog}
+        />
+      )}
     </>
   );
 };
