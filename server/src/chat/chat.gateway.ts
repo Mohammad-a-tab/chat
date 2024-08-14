@@ -144,7 +144,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.logger.log(`User ID fetche successfully.`);
     } catch (error) {
       this.logger.error(
-        // `Error fetching details for Room ID ${roomId} by User ID ${userId}: ${error.message}`,
+        `Error message`,
         error.stack,
       );
       throw new WsException('Error occurred while fetching room details.');
