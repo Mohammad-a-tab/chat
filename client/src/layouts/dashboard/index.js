@@ -37,7 +37,7 @@ const DashboardLayout = () => {
   );
 
   useEffect(() => {
-    dispatch(FetchUserProfile()).then(r => console.log(r));
+    dispatch(FetchUserProfile());
   }, [dispatch]);
 
   const handleCloseAudioDialog = () => {
@@ -91,19 +91,23 @@ const DashboardLayout = () => {
       });
 
       socket.on("start_chat", (data) => {
-        console.log('shayad data bashe', data);
         // add / update to conversation list
-        const existing_conversation = conversations.find(
-          (el) => el?.id === data._id
-        );
-        if (existing_conversation) {
-          // update direct conversation
-          dispatch(UpdateDirectConversation({ conversation: data }));
-        } else {
-          // add direct conversation
-          dispatch(AddDirectConversation({ conversation: data }));
+        for (const conversation of data) {
+          const existing_conversation = conversations.find(
+              (el) => el?.id === conversation.id
+          );
+
+          if (existing_conversation) {
+            // console.log('bay')
+            // update direct conversation
+            dispatch(UpdateDirectConversation({ conversation: conversation }));
+          } else {
+            // console.log('salam')
+            // add direct conversation
+            dispatch(AddDirectConversation({ conversation: conversation }));
+          }
+          dispatch(SelectConversation({ room_id: conversation.id }));
         }
-        dispatch(SelectConversation({ room_id: data._id }));
       });
 
       socket.on("new_friend_request", (data) => {

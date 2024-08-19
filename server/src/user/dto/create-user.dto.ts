@@ -39,6 +39,15 @@ export class CreateUserDto {
 
   @ApiProperty({
     required: true,
+    description: 'The bio of the user',
+    example: 'i am a backend developer',
+  })
+  @MinLength(3, { message: 'Bio must have at least 3 characters.' })
+  @IsString()
+  bio: string;
+
+  @ApiProperty({
+    required: true,
     description: 'The mail address of the user',
     example: 'example@example.com',
   })

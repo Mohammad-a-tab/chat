@@ -3,7 +3,7 @@ import io from "socket.io-client"; // Add this
 let socket;
 
 const connectSocket = (user_id, token) => {
-  console.log(token);
+  // console.log(token);
   socket = io("http://localhost:4800/", {
     query: { user_id },
     extraHeaders: {

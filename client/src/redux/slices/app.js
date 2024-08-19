@@ -241,7 +241,7 @@ export const FetchCallLogs = () => {
 export const FetchUserProfile = () => {
   return async (dispatch, getState) =>
   {
-    console.log(getState().auth)
+    // console.log(getState().auth)
     axios
       .get(`http://localhost:4000/user/${getState().auth.user_id}`, {
         headers: {
@@ -250,11 +250,12 @@ export const FetchUserProfile = () => {
         },
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         dispatch(slice.actions.fetchUser({ user: response.data.data }));
       })
       .catch((err) => {
-        console.log(err);
+        return err;
+        // console.log(err);
       });
   };
 };
@@ -282,7 +283,7 @@ export const UpdateUserProfile = (formValues) => {
       );
     }
     catch(error) {
-      console.log(error);
+      return error;
     }
 
     

@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar, Box, Fade, Menu, MenuItem, Stack } from "@mui/material";
 
-import { faker } from "@faker-js/faker";
+// import { faker } from "@faker-js/faker";
 
 import { Profile_Menu } from "../../data";
 import { useDispatch, useSelector } from "react-redux";
