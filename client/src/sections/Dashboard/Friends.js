@@ -19,7 +19,7 @@ const UsersList = () => {
 
   useEffect(() => {
     dispatch(FetchUsers());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -37,7 +37,7 @@ const FriendsList = () => {
 
   useEffect(() => {
     dispatch(FetchFriends());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -55,7 +55,7 @@ const RequestsList = () => {
 
   useEffect(() => {
     dispatch(FetchFriendRequests());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

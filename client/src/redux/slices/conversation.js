@@ -39,38 +39,56 @@ const slice = createSlice({
     },
     updateDirectConversation(state, action) {
       const this_conversation = action.payload.conversation;
-      // console.log('this update', this_conversation)
-
-      state.direct_chat.conversations = state.direct_chat.conversations.map(
-        (el) => {
-          if (el?.id !== this_conversation.id) {
-            return el;
-          } else {
-            // let user = [];
-            console.log('user', this_conversation.participants)
-            this_conversation.participants.forEach((pa) => {
-              const user = this_conversation.participants.find(
+      const users = state.direct_chat.conversations.map(
+          (el) => {
+            if (el?.id !== this_conversation.id) {
+              return el;
+            } else {
+              return this_conversation.participants.filter(
                   (elm) => elm.id.toString() !== user_id
               );
-              return {
-                id: this_conversation.id,
-                user_id: user?.id,
-                name: `${user?.firstName} ${user?.lastName}`,
-                online: user?.status === "Online",
-                img: user.avatar ? user.avatar : faker.image.avatar(),
-                msg: user.bio ? user.bio : faker.music.songName(),
-                time: "9:36",
-                unread: 0,
-                pinned: false,
-              };
-            })
+            }
           }
-        }
       );
+      // state.direct_chat.conversations = [];
+      let conver = [];
+      for (const data of users) {
+        for (const user of data) {
+          conver.fill({
+            id: this_conversation.id,
+            user_id: user?.id,
+            name: `${user?.firstName} ${user?.lastName}`,
+            online: user?.status === "Online",
+            img: user.avatar ? user.avatar : faker.image.avatar(),
+            msg: user.bio ? user.bio : faker.music.songName(),
+            time: faker.random.numeric(),
+            unread: 0,
+            pinned: false,
+          })
+        }
+      }
+      //  users.forEach(u => {
+      //   // console.log(u, 'uuuuuuuuuuuuuuuuuuuuuuuuuuuu')
+      //   // return {
+      //   //   id: this_conversation.id,
+      //   //   user_id: u?.id,
+      //   //   name: `${u?.firstName} ${u?.lastName}`,
+      //   //   online: u?.status === "Online",
+      //   //   img: u.avatar ? u.avatar : faker.image.avatar(),
+      //   //   msg: u.bio ? u.bio : faker.music.songName(),
+      //   //   time: faker.random.numeric(),
+      //   //   unread: 0,
+      //   //   pinned: false,
+      //   // }
+      // })
+      // state.direct_chat.conversations.pop()
+      state.direct_chat.conversations = conver
+      console.log('conver', conver)
+      console.log(state.direct_chat.conversations, 'vay vay')
     },
     addDirectConversation(state, action) {
       const this_conversation = action.payload.conversation;
-      console.log('this conversationdsdsdsdds', this_conversation)
+      // console.log('this conversationdsdsdsdds', this_conversation)
       let user = {};
 
       user = this_conversation.participants.find(

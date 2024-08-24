@@ -98,11 +98,11 @@ const DashboardLayout = () => {
           );
 
           if (existing_conversation) {
-            // console.log('bay')
+            console.log('bay')
             // update direct conversation
             dispatch(UpdateDirectConversation({ conversation: conversation }));
           } else {
-            // console.log('salam')
+            console.log('salam')
             // add direct conversation
             dispatch(AddDirectConversation({ conversation: conversation }));
           }

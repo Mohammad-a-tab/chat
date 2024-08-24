@@ -24,7 +24,7 @@ import {
   SearchIconWrapper,
   StyledInputBase,
 } from "../../components/Search";
-// import Friends from "../../sections/dashboard/Friends";
+import Friends from "../../sections/Dashboard/Friends";
 import { socket } from "../../socket";
 import { useDispatch, useSelector } from "react-redux";
 import { FetchDirectConversations } from "../../redux/slices/conversation";
@@ -117,26 +117,26 @@ const Chats = () => {
           </Stack>
           <Stack sx={{ flexGrow: 1, overflow: "scroll", height: "100%" }}>
             <SimpleBarStyle timeout={500} clickOnTrack={false}>
-              <Stack spacing={2.4}>
-                {<Typography variant="subtitle2" sx={{ color: "#676667" }}>
-                  Pinned
-                </Typography> }
-                {/* Chat List */}
-                <Typography variant="subtitle2" sx={{ color: "#676667" }}>
-                  All Chats
-                </Typography>
-                {/* Chat List */}
-                {conversations.filter((el) => !el.pinned).map((el, idx) => {
-                  return <ChatElement {...el} />;
-                })}
-              </Stack>
+              {/*<Stack spacing={2.4}>*/}
+              {/*  {<Typography variant="subtitle2" sx={{ color: "#676667" }}>*/}
+              {/*    Pinned*/}
+              {/*  </Typography> }*/}
+              {/*  /!* Chat List *!/*/}
+              {/*  <Typography variant="subtitle2" sx={{ color: "#676667" }}>*/}
+              {/*    All Chats*/}
+              {/*  </Typography>*/}
+              {/*  /!* Chat List *!/*/}
+              {/*  {conversations.filter((el) => !el.pinned).map((el, idx) => {*/}
+              {/*    return <ChatElement {...el} />;*/}
+              {/*  })}*/}
+              {/*</Stack>*/}
             </SimpleBarStyle>
           </Stack>
         </Stack>
       </Box>
-      {/*{openDialog && (*/}
-      {/*  <Friends open={openDialog} handleClose={handleCloseDialog} />*/}
-      {/*)}*/}
+      {openDialog && (
+        <Friends open={openDialog} handleClose={handleCloseDialog} />
+      )}
     </>
   );
 };
