@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { faker } from "@faker-js/faker";
-import { AWS_S3_REGION, S3_BUCKET_NAME } from "../../config";
+import {createSlice} from "@reduxjs/toolkit";
+import {faker} from "@faker-js/faker";
+import {AWS_S3_REGION, S3_BUCKET_NAME} from "../../config";
 
 const user_id = window.localStorage.getItem("user_id");
 
@@ -18,58 +18,27 @@ const slice = createSlice({
   initialState,
   reducers: {
     fetchDirectConversations(state, action) {
-      const list = action.payload.conversations.map((el) => {
+      state.direct_chat.conversations = action.payload.conversations.map((el) => {
+        // console.log('el', el);
         const user = el.participants.find(
-          (elm) => elm._id.toString() !== user_id
+            (elm) => elm.id.toString() !== user_id
         );
         return {
-          id: el._id,
-          user_id: user?._id,
+          id: el.id,
+          user_id: user?.id,
           name: `${user?.firstName} ${user?.lastName}`,
           online: user?.status === "Online",
           img: `https://${S3_BUCKET_NAME}.s3.${AWS_S3_REGION}.amazonaws.com/${user?.avatar}`,
-          msg: el.messages.slice(-1)[0].text, 
+          msg: el.messages.slice(-1)[0].text,
           time: "9:36",
           unread: 0,
           pinned: false,
           about: user?.about,
         };
       });
-
-      state.direct_chat.conversations = list;
     },
     updateDirectConversation(state, action) {
       const this_conversation = action.payload.conversation;
-<<<<<<< Updated upstream
-      state.direct_chat.conversations = state.direct_chat.conversations.map(
-        (el) => {
-          if (el?.id !== this_conversation._id) {
-            return el;
-          } else {
-            const user = this_conversation.participants.find(
-              (elm) => elm._id.toString() !== user_id
-            );
-            return {
-              id: this_conversation._id._id,
-              user_id: user?._id,
-              name: `${user?.firstName} ${user?.lastName}`,
-              online: user?.status === "Online",
-              img: faker.image.avatar(),
-              msg: faker.music.songName(),
-              time: "9:36",
-              unread: 0,
-              pinned: false,
-            };
-          }
-        }
-      );
-    },
-    addDirectConversation(state, action) {
-      const this_conversation = action.payload.conversation;
-      const user = this_conversation.participants.find(
-        (elm) => elm._id.toString() !== user_id
-=======
-
       const users = state.direct_chat.conversations.map(
           (el) => {
             if (el?.id !== this_conversation.id) {
@@ -81,56 +50,69 @@ const slice = createSlice({
             }
           }
       );
-
-      if (!state.direct_chat.conversations) {
-        state.direct_chat.conversations = [];
-      }
-
+      // state.direct_chat.conversations = [];
+      let conver = [];
       for (const data of users) {
         for (const user of data) {
-          const userExists = state.direct_chat.conversations.some(conversation => conversation.user_id === user?.id);
-
-          if (!userExists) {
-            const conversation = {
-              id: this_conversation.id,
-              user_id: user?.id,
-              name: `${user?.firstName} ${user?.lastName}`,
-              online: user?.status === "Online",
-              img: user.avatar ? user.avatar : faker.image.avatar(),
-              msg: user.bio ? user.bio : faker.music.songName(),
-              time: faker.random.numeric(),
-              unread: 0,
-              pinned: false,
-            };
-
-            state.direct_chat.conversations.push(conversation);
-          }
+          conver.fill({
+            id: this_conversation.id,
+            user_id: user?.id,
+            name: `${user?.firstName} ${user?.lastName}`,
+            online: user?.status === "Online",
+            img: user.avatar ? user.avatar : faker.image.avatar(),
+            msg: user.bio ? user.bio : faker.music.songName(),
+            time: faker.random.numeric(),
+            unread: 0,
+            pinned: false,
+          })
         }
       }
+      //  users.forEach(u => {
+      //   // console.log(u, 'uuuuuuuuuuuuuuuuuuuuuuuuuuuu')
+      //   // return {
+      //   //   id: this_conversation.id,
+      //   //   user_id: u?.id,
+      //   //   name: `${u?.firstName} ${u?.lastName}`,
+      //   //   online: u?.status === "Online",
+      //   //   img: u.avatar ? u.avatar : faker.image.avatar(),
+      //   //   msg: u.bio ? u.bio : faker.music.songName(),
+      //   //   time: faker.random.numeric(),
+      //   //   unread: 0,
+      //   //   pinned: false,
+      //   // }
+      // })
+      // state.direct_chat.conversations.pop()
+      state.direct_chat.conversations = conver
+      console.log('conver', conver)
+      console.log(state.direct_chat.conversations, 'vay vay')
     },
     addDirectConversation(state, action) {
       const this_conversation = action.payload.conversation;
+      // console.log('this conversationdsdsdsdds', this_conversation)
       let user = {};
 
       user = this_conversation.participants.find(
           (elm) => elm.id.toString() !== user_id
->>>>>>> Stashed changes
       );
-      state.direct_chat.conversations = state.direct_chat.conversations.filter(
-        (el) => el?.id !== this_conversation._id
-      );
-      console.log({'angari roome': user})
-      state.direct_chat.conversations.push({
-        id: this_conversation._id._id,
-        user_id: user?._id,
-        name: `${user?.firstName} ${user?.lastName}`,
-        online: user?.status === "Online",
-        img: faker.image.avatar(),
-        msg: faker.music.songName(),
-        time: "9:36",
-        unread: 0,
-        pinned: false,
-      });
+      if (user) {
+        state.direct_chat.conversations = state.direct_chat.conversations.filter(
+            (el) => el?.id !== this_conversation.id
+        );
+        state.direct_chat.conversations = [];
+        state.direct_chat.conversations.push({
+          id: this_conversation.id,
+          user_id: user?.id,
+          name: `${user?.firstName} ${user?.lastName}`,
+          online: user?.status === "Online",
+          img: user.avatar ? user.avatar : faker.image.avatar(),
+          msg: user.bio ? user.bio : faker.music.songName(),
+          time: faker.random.numeric(),
+          unread: 0,
+          pinned: false,
+        });
+      } else {
+        state.direct_chat.conversations = [];
+      }
     },
     setCurrentConversation(state, action) {
       state.direct_chat.current_conversation = action.payload;
@@ -138,7 +120,7 @@ const slice = createSlice({
     fetchCurrentMessages(state, action) {
       const messages = action.payload.messages;
       const formatted_messages = messages.map((el) => ({
-        id: el._id,
+        id: el.id,
         type: "msg",
         subtype: el.type,
         message: el.text,

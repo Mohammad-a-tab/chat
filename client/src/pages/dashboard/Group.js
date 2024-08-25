@@ -10,8 +10,8 @@ import {
 import { MagnifyingGlass, Plus } from "phosphor-react";
 import { useTheme } from "@mui/material/styles";
 import { SimpleBarStyle } from "../../components/Scrollbar";
-import { ChatList } from "../../data";
-import ChatElement from "../../components/ChatElement";
+// import { ChatList } from "../../data";
+// import ChatElement from "../../components/ChatElement";
 import {
   Search,
   SearchIconWrapper,
@@ -20,11 +20,11 @@ import {
 // import CreateGroup from "../../sections/dashboard/CreateGroup";
 
 const Group = () => {
-  const [openDialog, setOpenDialog] = useState(false);
+  const [/*openDialog*/, setOpenDialog] = useState(false);
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  }
+  // const handleCloseDialog = () => {
+  //   setOpenDialog(false);
+  // }
   const handleOpenDialog = () => {
     setOpenDialog(true);
   }
@@ -87,16 +87,16 @@ const Group = () => {
                     Pinned
                   </Typography>
                   {/* Chat List */}
-                  {ChatList.filter((el) => el.pinned).map((el, idx) => {
-                    return <ChatElement {...el} />;
-                  })}
+                  {/*{ChatList.filter((el) => el.pinned).map((el, idx) => {*/}
+                  {/*  return <ChatElement {...el} />;*/}
+                  {/*})}*/}
                   <Typography variant="subtitle2" sx={{ color: "#676667" }}>
                     All Chats
                   </Typography>
                   {/* Chat List */}
-                  {ChatList.filter((el) => !el.pinned).map((el, idx) => {
-                    return <ChatElement {...el} />;
-                  })}
+                  {/*{ChatList.filter((el) => !el.pinned).map((el, idx) => {*/}
+                  {/*  return <ChatElement {...el} />;*/}
+                  {/*})}*/}
                 </Stack>
               </SimpleBarStyle>
             </Stack>

@@ -143,26 +143,25 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       this.logger.log(`User ID fetche successfully.`);
     } catch (error) {
-      this.logger.error(
-        `Error message`,
-        error.stack,
-      );
+      this.logger.error(`Error message`, error.stack);
       throw new WsException('Error occurred while fetching room details.');
     }
   }
 
-  @SubscribeMessage('get_direct_conversations')
+  @SubscribeMessage('getConversion')
   async onFetchDirectConversations(
     @WsCurrentUser() currentUser: UserPayload,
-    // @MessageBody(new WsValidationPipe())
-    //   roomFetchRequestDto: RoomFetchRequestDto,
+    @MessageBody()
+    user_id: string,
     @ConnectedSocket() client: Socket,
   ): Promise<void> {
     const { id: userId } = currentUser;
+    // console.log(userId);
 
     try {
       const rooms = await this.roomService.findByUserId(userId);
 
+      console.log(rooms);
       client.emit('start_chat', rooms);
 
       this.logger.log(`User ID ${userId} fetched details for R vat vat.`);

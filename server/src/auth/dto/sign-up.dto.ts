@@ -32,6 +32,15 @@ export class SignUpDto {
 
   @ApiProperty({
     required: true,
+    description: 'The bio of the user',
+    example: 'test80',
+  })
+  @MinLength(3, { message: 'Bio must have at least 3 characters.' })
+  @IsString()
+  bio: string;
+
+  @ApiProperty({
+    required: true,
     description: 'The mail address of the user',
     example: 'john@example.com',
   })
