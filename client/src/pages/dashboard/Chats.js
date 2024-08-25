@@ -17,7 +17,10 @@ import { SimpleBarStyle } from "../../components/Scrollbar";
 import { useTheme } from "@mui/material/styles";
 import useResponsive from "../../hooks/useResponsive";
 import BottomNav from "../../layouts/dashboard/BottomNav";
+<<<<<<< Updated upstream
 import { ChatList } from "../../data";
+=======
+>>>>>>> Stashed changes
 import ChatElement from "../../components/ChatElement";
 import {
   Search,
@@ -37,8 +40,12 @@ const Chats = () => {
 
   const dispatch = useDispatch();
 
+<<<<<<< Updated upstream
   const {conversations} = useSelector((state) => state.conversation.direct_chat);
   console.log('conversation', conversations)
+=======
+  const { conversations } = useSelector((state) => state.conversation.direct_chat);
+>>>>>>> Stashed changes
 
   useEffect(() => {
     socket.emit("get_direct_conversations", { user_id }, (data) => {
@@ -121,6 +128,7 @@ const Chats = () => {
           <Stack sx={{ flexGrow: 1, overflow: "scroll", height: "100%" }}>
             <SimpleBarStyle timeout={500} clickOnTrack={false}>
               <Stack spacing={2.4}>
+<<<<<<< Updated upstream
                 {/* <Typography variant="subtitle2" sx={{ color: "#676667" }}>
                   Pinned
                 </Typography> */}
@@ -128,6 +136,12 @@ const Chats = () => {
                 {/* {ChatList.filter((el) => el.pinned).map((el, idx) => {
                   return <ChatElement {...el} />;
                 })} */}
+=======
+                {<Typography variant="subtitle2" sx={{ color: "#676667" }}>
+                  Pinned
+                </Typography> }
+                {/* Chat List */}
+>>>>>>> Stashed changes
                 <Typography variant="subtitle2" sx={{ color: "#676667" }}>
                   All Chats
                 </Typography>

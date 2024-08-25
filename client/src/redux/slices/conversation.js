@@ -40,6 +40,7 @@ const slice = createSlice({
     },
     updateDirectConversation(state, action) {
       const this_conversation = action.payload.conversation;
+<<<<<<< Updated upstream
       state.direct_chat.conversations = state.direct_chat.conversations.map(
         (el) => {
           if (el?.id !== this_conversation._id) {
@@ -67,6 +68,53 @@ const slice = createSlice({
       const this_conversation = action.payload.conversation;
       const user = this_conversation.participants.find(
         (elm) => elm._id.toString() !== user_id
+=======
+
+      const users = state.direct_chat.conversations.map(
+          (el) => {
+            if (el?.id !== this_conversation.id) {
+              return el;
+            } else {
+              return this_conversation.participants.filter(
+                  (elm) => elm.id.toString() !== user_id
+              );
+            }
+          }
+      );
+
+      if (!state.direct_chat.conversations) {
+        state.direct_chat.conversations = [];
+      }
+
+      for (const data of users) {
+        for (const user of data) {
+          const userExists = state.direct_chat.conversations.some(conversation => conversation.user_id === user?.id);
+
+          if (!userExists) {
+            const conversation = {
+              id: this_conversation.id,
+              user_id: user?.id,
+              name: `${user?.firstName} ${user?.lastName}`,
+              online: user?.status === "Online",
+              img: user.avatar ? user.avatar : faker.image.avatar(),
+              msg: user.bio ? user.bio : faker.music.songName(),
+              time: faker.random.numeric(),
+              unread: 0,
+              pinned: false,
+            };
+
+            state.direct_chat.conversations.push(conversation);
+          }
+        }
+      }
+    },
+    addDirectConversation(state, action) {
+      const this_conversation = action.payload.conversation;
+      let user = {};
+
+      user = this_conversation.participants.find(
+          (elm) => elm.id.toString() !== user_id
+>>>>>>> Stashed changes
       );
       state.direct_chat.conversations = state.direct_chat.conversations.filter(
         (el) => el?.id !== this_conversation._id
