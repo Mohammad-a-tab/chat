@@ -17,17 +17,13 @@ import { SimpleBarStyle } from "../../components/Scrollbar";
 import { useTheme } from "@mui/material/styles";
 import useResponsive from "../../hooks/useResponsive";
 import BottomNav from "../../layouts/dashboard/BottomNav";
-<<<<<<< Updated upstream
-import { ChatList } from "../../data";
-=======
->>>>>>> Stashed changes
 import ChatElement from "../../components/ChatElement";
 import {
   Search,
   SearchIconWrapper,
   StyledInputBase,
 } from "../../components/Search";
-// import Friends from "../../sections/dashboard/Friends";
+import Friends from "../../sections/Dashboard/Friends";
 import { socket } from "../../socket";
 import { useDispatch, useSelector } from "react-redux";
 import { FetchDirectConversations } from "../../redux/slices/conversation";
@@ -40,21 +36,13 @@ const Chats = () => {
 
   const dispatch = useDispatch();
 
-<<<<<<< Updated upstream
-  const {conversations} = useSelector((state) => state.conversation.direct_chat);
-  console.log('conversation', conversations)
-=======
   const { conversations } = useSelector((state) => state.conversation.direct_chat);
->>>>>>> Stashed changes
 
   useEffect(() => {
-    socket.emit("get_direct_conversations", { user_id }, (data) => {
-      console.log(data); // this data is the list of conversations
-      // dispatch action
-
+    socket.emit("getConversion", { user_id }, (data) => {
       dispatch(FetchDirectConversations({ conversations: data }));
     });
-  }, []);
+  }, [dispatch]);
 
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -128,20 +116,10 @@ const Chats = () => {
           <Stack sx={{ flexGrow: 1, overflow: "scroll", height: "100%" }}>
             <SimpleBarStyle timeout={500} clickOnTrack={false}>
               <Stack spacing={2.4}>
-<<<<<<< Updated upstream
-                {/* <Typography variant="subtitle2" sx={{ color: "#676667" }}>
-                  Pinned
-                </Typography> */}
-                {/* Chat List */}
-                {/* {ChatList.filter((el) => el.pinned).map((el, idx) => {
-                  return <ChatElement {...el} />;
-                })} */}
-=======
                 {<Typography variant="subtitle2" sx={{ color: "#676667" }}>
                   Pinned
                 </Typography> }
                 {/* Chat List */}
->>>>>>> Stashed changes
                 <Typography variant="subtitle2" sx={{ color: "#676667" }}>
                   All Chats
                 </Typography>
@@ -154,9 +132,9 @@ const Chats = () => {
           </Stack>
         </Stack>
       </Box>
-      {/*{openDialog && (*/}
-      {/*  <Friends open={openDialog} handleClose={handleCloseDialog} />*/}
-      {/*)}*/}
+      {openDialog && (
+        <Friends open={openDialog} handleClose={handleCloseDialog} />
+      )}
     </>
   );
 };
