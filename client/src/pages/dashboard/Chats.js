@@ -17,7 +17,6 @@ import { SimpleBarStyle } from "../../components/Scrollbar";
 import { useTheme } from "@mui/material/styles";
 import useResponsive from "../../hooks/useResponsive";
 import BottomNav from "../../layouts/dashboard/BottomNav";
-// import { ChatList } from "../../data";
 import ChatElement from "../../components/ChatElement";
 import {
   Search,
@@ -38,7 +37,6 @@ const Chats = () => {
   const dispatch = useDispatch();
 
   const { conversations } = useSelector((state) => state.conversation.direct_chat);
-  // console.log('conversation', conversations)
 
   useEffect(() => {
     socket.emit("getConversion", { user_id }, (data) => {
@@ -117,19 +115,19 @@ const Chats = () => {
           </Stack>
           <Stack sx={{ flexGrow: 1, overflow: "scroll", height: "100%" }}>
             <SimpleBarStyle timeout={500} clickOnTrack={false}>
-              {/*<Stack spacing={2.4}>*/}
-              {/*  {<Typography variant="subtitle2" sx={{ color: "#676667" }}>*/}
-              {/*    Pinned*/}
-              {/*  </Typography> }*/}
-              {/*  /!* Chat List *!/*/}
-              {/*  <Typography variant="subtitle2" sx={{ color: "#676667" }}>*/}
-              {/*    All Chats*/}
-              {/*  </Typography>*/}
-              {/*  /!* Chat List *!/*/}
-              {/*  {conversations.filter((el) => !el.pinned).map((el, idx) => {*/}
-              {/*    return <ChatElement {...el} />;*/}
-              {/*  })}*/}
-              {/*</Stack>*/}
+              <Stack spacing={2.4}>
+                {<Typography variant="subtitle2" sx={{ color: "#676667" }}>
+                  Pinned
+                </Typography> }
+                {/* Chat List */}
+                <Typography variant="subtitle2" sx={{ color: "#676667" }}>
+                  All Chats
+                </Typography>
+                {/* Chat List */}
+                {conversations.filter((el) => !el.pinned).map((el, idx) => {
+                  return <ChatElement {...el} />;
+                })}
+              </Stack>
             </SimpleBarStyle>
           </Stack>
         </Stack>
