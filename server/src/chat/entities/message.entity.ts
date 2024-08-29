@@ -11,8 +11,17 @@ export class Message extends BaseEntity {
   @Column()
   text: string;
 
+  @Column()
+  type: string;
+
   @ManyToOne(() => Room, (roomEntity) => roomEntity.messages)
   room: Room;
+
+  @Column()
+  to: string;
+
+  @Column()
+  from: string;
 
   @Column()
   createdBy: string;

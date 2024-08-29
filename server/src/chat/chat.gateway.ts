@@ -256,7 +256,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('sendMessage')
   async onSendMessage(
     @WsCurrentUser() currentUser: UserPayload,
-    @MessageBody(new WsValidationPipe()) createMessageDto: CreateMessageDto,
+    @MessageBody() createMessageDto: CreateMessageDto,
     @ConnectedSocket() client: Socket,
   ): Promise<void> {
     const userId = currentUser.id;
@@ -271,6 +271,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         `User ID ${userId} sent a new message in Room ID ${roomId}`,
       );
 
+      console.log('new message2121', newMessage);
       const room = await this.roomService.findOne(userId, roomId);
       await this.notifyRoomParticipants(
         room.participants,
@@ -283,6 +284,38 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         error.stack,
       );
       throw new WsException('Error occurred while sending the message.');
+    }
+  }
+
+  @SubscribeMessage('getMessages')
+  async onGetMessages(
+    @WsCurrentUser() currentUser: UserPayload,
+    @MessageBody() filterMessageDto: FilterMessageDto,
+    @ConnectedSocket() socket: Socket,
+  ): Promise<void> {
+    const { id: userId } = currentUser;
+    const { roomId } = filterMessageDto;
+
+    try {
+      const room = await this.roomService.findOne(userId, roomId);
+
+      const isParticipant = room.participants.some(
+        (participant) => participant.id === userId,
+      );
+      if (!isParticipant) {
+        throw new WsException(
+          'Access Denied: You must be a member of the room to view messages.',
+        );
+      }
+
+      const messages = await this.messageService.findByRoomId(filterMessageDto);
+      this.server.to(socket.id).emit('allMessages', messages);
+    } catch (error) {
+      this.logger.error(
+        `Failed to fetch messages for Room ID ${roomId} by User ID ${userId}: ${error.message}`,
+        error.stack,
+      );
+      throw new WsException('Error occurred while fetching messages.');
     }
   }
 

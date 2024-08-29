@@ -112,11 +112,12 @@ const slice = createSlice({
     },
 
     fetchCurrentMessages(state, action) {
+      // action.payload.messages = [];/\
       const messages = action.payload.messages;
       const formatted_messages = messages.map((el) => ({
         id: el.id,
         type: "msg",
-        subtype: el.type,
+        subtype: 'img',
         message: el.text,
         incoming: el.to === user_id,
         outgoing: el.from === user_id,
@@ -124,6 +125,7 @@ const slice = createSlice({
       state.direct_chat.current_messages = formatted_messages;
     },
     addDirectMessage(state, action) {
+      // state.direct_chat.current_messages = [];
       state.direct_chat.current_messages.push(action.payload.message);
     }
   },

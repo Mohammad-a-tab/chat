@@ -253,10 +253,9 @@ const Footer = () => {
             >
               <IconButton
                 onClick={() => {
-                  console.log(current_conversation);
-                  socket.emit("text_message", {
-                    message: linkify(value),
-                    conversation_id: room_id,
+                  socket.emit("sendMessage", {
+                    text: linkify(value),
+                    roomId: room_id,
                     from: user_id,
                     to: current_conversation.user_id,
                     type: containsUrl(value) ? "Link" : "Text",
