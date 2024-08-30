@@ -112,7 +112,6 @@ const slice = createSlice({
     },
 
     fetchCurrentMessages(state, action) {
-      // action.payload.messages = [];/\
       const messages = action.payload.messages;
       const formatted_messages = messages.map((el) => ({
         id: el.id,
@@ -125,7 +124,6 @@ const slice = createSlice({
       state.direct_chat.current_messages = formatted_messages;
     },
     addDirectMessage(state, action) {
-      // state.direct_chat.current_messages = [];
       state.direct_chat.current_messages.push(action.payload.message);
     }
   },

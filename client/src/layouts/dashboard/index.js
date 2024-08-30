@@ -74,11 +74,6 @@ const DashboardLayout = () => {
 
       socket.on("messageSent", (data) => {
         const message = data;
-        console.log('message', message)
-        // console.log(current_conversation, data);
-        // check if msg we got is from currently selected conversation
-        // if (current_conversation?.id === data.conversation_id) {
-        //   console.log('salam')
           dispatch(
             AddDirectMessage({
               id: message.id,
@@ -89,7 +84,6 @@ const DashboardLayout = () => {
               outgoing: message.from === user_id,
             })
           );
-        // }
       });
 
       socket.on("start_chat", (data) => {
