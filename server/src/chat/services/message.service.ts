@@ -24,17 +24,20 @@ export class MessageService {
   async create(
     userId: string,
     createMessageDto: CreateMessageDto,
-  ): Promise<TResultAndCount<MessageDto>> {
+  ) /*: Promise<TResultAndCount<MessageDto>>*/ {
     try {
       const newMessage = this.messageRepository.create({
         ...createMessageDto,
+        from: userId,
         createdBy: userId,
         updatedBy: userId,
       });
 
       await this.messageRepository.save(newMessage);
-      this.logger.log(`Message created successfully by User ID: ${userId}`);
-      return await this.findByRoomId({ roomId: createMessageDto.roomId });
+      // console.log('new message', newMessage);
+      return newMessage;
+      // this.logger.log(`Message created successfully by User ID: ${userId}`);
+      // return await this.findByRoomId({ roomId: createMessageDto.roomId });
     } catch (error) {
       this.logger.error(
         `Failed to create message by User ID: ${userId}. Error: ${error.message}`,

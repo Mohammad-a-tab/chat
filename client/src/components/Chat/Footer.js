@@ -72,6 +72,7 @@ const ChatInput = ({
   setValue,
   value,
   inputRef,
+  handleSendMessage
 }) => {
   const [openActions, setOpenActions] = React.useState(false);
 
@@ -81,6 +82,11 @@ const ChatInput = ({
       value={value}
       onChange={(event) => {
         setValue(event.target.value);
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "Enter") {
+          handleSendMessage();
+        }
       }}
       fullWidth
       placeholder="Write a message..."
@@ -192,6 +198,22 @@ const Footer = () => {
     }
   }
 
+
+  const handleSendMessage = () => {
+    if (value.trim() !== "") {
+      socket.emit("sendMessage", {
+        text: linkify(value),
+        roomId: room_id,
+        from: user_id,
+        to: current_conversation.user_id,
+        type: containsUrl(value) ? "Link" : "Text",
+      });
+
+      // Clear the input field after sending the message
+      setValue('');
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -236,6 +258,7 @@ const Footer = () => {
               setValue={setValue}
               openPicker={openPicker}
               setOpenPicker={setOpenPicker}
+              handleSendMessage={handleSendMessage}
             />
           </Stack>
           <Box
@@ -252,16 +275,7 @@ const Footer = () => {
               justifyContent="center"
             >
               <IconButton
-                onClick={() => {
-                  console.log(current_conversation);
-                  socket.emit("text_message", {
-                    message: linkify(value),
-                    conversation_id: room_id,
-                    from: user_id,
-                    to: current_conversation.user_id,
-                    type: containsUrl(value) ? "Link" : "Text",
-                  });
-                }}
+                  onClick={handleSendMessage}
               >
                 <PaperPlaneTilt color="#ffffff" />
               </IconButton>

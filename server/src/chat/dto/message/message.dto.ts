@@ -11,6 +11,12 @@ export class MessageDto {
   @ApiProperty({ example: 'Hello, this is a message.' })
   text: string;
 
+  @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
+  to: string;
+
+  @ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
+  from: string;
+
   @ApiProperty({ type: UserDto })
   creator: UserDto;
 

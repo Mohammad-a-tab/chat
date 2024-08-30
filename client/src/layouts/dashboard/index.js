@@ -72,14 +72,11 @@ const DashboardLayout = () => {
         dispatch(PushToVideoCallQueue(data));
       });
 
-      socket.on("new_message", (data) => {
-        const message = data.message;
-        console.log(current_conversation, data);
-        // check if msg we got is from currently selected conversation
-        if (current_conversation?.id === data.conversation_id) {
+      socket.on("messageSent", (data) => {
+        const message = data;
           dispatch(
             AddDirectMessage({
-              id: message._id,
+              id: message.id,
               type: "msg",
               subtype: message.type,
               message: message.text,
@@ -87,7 +84,6 @@ const DashboardLayout = () => {
               outgoing: message.from === user_id,
             })
           );
-        }
       });
 
       socket.on("start_chat", (data) => {
@@ -98,11 +94,9 @@ const DashboardLayout = () => {
           );
 
           if (existing_conversation) {
-            console.log('bay')
             // update direct conversation
             dispatch(UpdateDirectConversation({ conversation: conversation }));
           } else {
-            console.log('salam')
             // add direct conversation
             dispatch(AddDirectConversation({ conversation: conversation }));
           }
